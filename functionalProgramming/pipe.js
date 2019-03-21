@@ -117,6 +117,7 @@ console.log(
 );
 var _map = _curryr(_map);
 var _filter = _curryr(_filter);
+
 _go(
   users,
   function(users) {
@@ -138,5 +139,5 @@ _go(
   _map(_get("age")),
   console.log
 );
-
+// Arrow function implementation
 _go(users, _filter(user => user.age < 30), _map(_get("age")));
