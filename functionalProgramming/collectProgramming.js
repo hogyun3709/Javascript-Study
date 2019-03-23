@@ -39,8 +39,17 @@ function _map(list, mapper) {
   });
   return new_list;
 }
+function _filter(list, predi) {
+  const new_list = [];
+  _each(list, function(val) {
+    if (predi(val)) {
+      new_list.push(val);
+    }
+  });
+  return new_list;
+}
 
-// - map
+// 1.map
 
 // -map practice
 
@@ -49,6 +58,7 @@ console.log(
     return user.name;
   })
 );
+
 function _identity(val) {
   return val;
 }
@@ -75,3 +85,34 @@ function _pluck(data, key) {
   });
 }
 console.log(_pluck(users, "age"));
+
+//2. _filter
+
+// -reject
+function _negate(fns) {
+  return function(val) {
+    return !fns(val);
+  };
+}
+function _reject(data, predi) {
+  return _filter(data, _negate(predi));
+}
+
+// function _reject(data, predi) {
+//   return _filter(data, function(val) {
+//     return !predi(val);
+//   });
+// }
+
+console.log(
+  _reject(users, function(user) {
+    return user.age > 30;
+  })
+);
+
+// - compact
+
+var _compact = _filter(_identity);
+
+console.log(_filter([1, 2, 0, false, null, {}], _identity));
+console.log(_compact([1, 2, 0, false, null, {}]));
