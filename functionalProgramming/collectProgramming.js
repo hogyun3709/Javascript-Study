@@ -16,6 +16,18 @@ var users = [
   { id: 90, name: "SK", age: 22 }
 ];
 //predfined functions
+function _curry(fn) {
+  return function(a, b) {
+    return arguments.length == 2 ? fn(a, b) : function(b) { return fn(a, b); };
+  }
+}
+
+function _curryr(fn) {
+  return function(a, b) {
+    return arguments.length == 2 ? fn(a, b) : function(b) { return fn(b, a); };
+  }
+}
+
 function _is_object(obj) {
   return typeof obj == "object" && !!obj;
 }
@@ -48,6 +60,9 @@ function _filter(list, predi) {
   });
   return new_list;
 }
+var _map = _curryr(_map),
+  _each = _curryr(_each),
+  _filter = _curryr(_filter);
 
 // 1.map
 
@@ -87,6 +102,7 @@ function _pluck(data, key) {
 console.log(_pluck(users, "age"));
 
 //2. _filter
+
 
 // -reject
 function _negate(fns) {
