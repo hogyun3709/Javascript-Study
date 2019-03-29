@@ -252,3 +252,51 @@ console.log(
     return user.age < 20;
   })
 );
+
+//5. reduce
+
+function _min(data) {
+  return _reduce(data, function(a, b) {
+    return a < b ? a : b;
+  });
+}
+function _max(data) {
+  return _reduce(data, function(a, b) {
+    return a > b ? a : b;
+  });
+}
+
+function _min_by(data, iter) {
+  return _reduce(data, function(a, b) {
+    return iter(a) < iter(b) ? a : b;
+  });
+}
+function _max_by(data, iter) {
+  return _reduce(data, function(a, b) {
+    return iter(a) > iter(b) ? a : b;
+  });
+}
+
+var _min_by = _curryr(_min_by);
+var _max_by = _curryr(_max_by);
+console.log(_min([1, 2, 3, 4, 5, -4]));
+console.log(_max([1, 2, 3, 4, 5, -4]));
+console.log(_min_by([1, 2, 3, 4, 5, -4], Math.abs));
+console.log(_max_by([1, 2, 3, 4, 5, -20], Math.abs));
+
+console.log(
+  _min_by(users, function(user) {
+    return user.age;
+  })
+);
+
+_go(
+  users,
+  _filter(user => user.age >= 30),
+  _min_by(function(user){
+  //_min_by(user => user.age)
+  //_min_by(_get('age'))
+    return user.age
+  }),
+  console.log
+)
