@@ -16,6 +16,11 @@ var users = [
   { id: 90, name: "SK", age: 22 }
 ];
 //predfined functions
+function _negate(func) {
+  return function(val) {
+    return !func(val);
+  };
+}
 var slice = Array.prototype.slice;
 function _rest(list, num) {
   return slice.call(list, num || 1);
@@ -34,10 +39,14 @@ function _reduce(list, iter, memo) {
 function _pipe() {
   var fns = arguments;
   return function(arg) {
-    return _reduce(fns, function(arg, fn) {
-      return fn(arg);
-    }, arg);
-  }
+    return _reduce(
+      fns,
+      function(arg, fn) {
+        return fn(arg);
+      },
+      arg
+    );
+  };
 }
 function _go(arg) {
   var fns = _rest(arguments);
@@ -141,7 +150,6 @@ console.log(_pluck(users, "age"));
 
 //2. _filter
 
-
 // -reject
 function _negate(fns) {
   return function(val) {
@@ -214,5 +222,33 @@ _go(
 console.log(
   _find_index(users, function(user) {
     return user.id == 50;
+  })
+);
+//4. some, every
+
+function _some(data, predi) {
+  return _find_index(data, predi || _identity) != -1;
+}
+console.log(
+  _some([1, 2, 5, 10, 20], function(val) {
+    return val > 10;
+  })
+);
+
+function _every(data, predi) {
+  return _find_index(data, _negate(predi || _identity)) == -1;
+}
+console.log(
+  _every([1, 2, 5, 10, 20], function(val) {
+    return val > 0;
+  })
+);
+
+console.log(_some([1, 2, 3, 4]));
+
+//20대 미만의 사용자가 있는가 확인
+console.log(
+  _some(users, function(user) {
+    return user.age < 20;
   })
 );
