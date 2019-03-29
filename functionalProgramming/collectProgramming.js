@@ -16,6 +16,56 @@ var users = [
   { id: 90, name: "SK", age: 22 }
 ];
 //predfined functions
+var slice = Array.prototype.slice;
+function _rest(list, num) {
+  return slice.call(list, num || 1);
+}
+function _reduce(list, iter, memo) {
+  if (arguments.length == 2) {
+    memo = list[0];
+    list = _rest(list);
+  }
+  _each(list, function(val) {
+    memo = iter(memo, val);
+  });
+  return memo;
+}
+
+function _pipe() {
+  var fns = arguments;
+  return function(arg) {
+    return _reduce(fns, function(arg, fn) {
+      return fn(arg);
+    }, arg);
+  }
+}
+function _go(arg) {
+  var fns = _rest(arguments);
+  return _pipe.apply(null, fns)(arg);
+}
+var _get = _curryr(function(obj, key) {
+  return obj == null ? undefined : obj[key];
+});
+function _curry(fn) {
+  return function(a, b) {
+    return arguments.length == 2
+      ? fn(a, b)
+      : function(b) {
+          return fn(a, b);
+        };
+  };
+}
+
+function _curryr(fn) {
+  return function(a, b) {
+    return arguments.length == 2
+      ? fn(a, b)
+      : function(b) {
+          return fn(b, a);
+        };
+  };
+}
+
 function _is_object(obj) {
   return typeof obj == "object" && !!obj;
 }
@@ -48,6 +98,9 @@ function _filter(list, predi) {
   });
   return new_list;
 }
+var _map = _curryr(_map),
+  _each = _curryr(_each),
+  _filter = _curryr(_filter);
 
 // 1.map
 
@@ -114,5 +167,51 @@ console.log(
 
 var _compact = _filter(_identity);
 
-console.log(_filter([1, 2, 0, false, null, {}], _identity));
 console.log(_compact([1, 2, 0, false, null, {}]));
+
+//3. find
+
+var _find = _curryr(function(list, predi) {
+  var keys = _keys(list);
+  for (var i = 0, len = keys.length; i < len; i++) {
+    var val = list[keys[i]];
+    if (predi(val)) return val;
+  }
+});
+
+var _find_index = _curryr(function(list, predi) {
+  var keys = _keys(list);
+  for (var i = 0, len = keys.length; i < len; i++) {
+    var val = list[keys[i]];
+    if (predi(val)) return i;
+  }
+  return -1;
+});
+
+console.log(
+  _find(users, function(user) {
+    return user.id == 50;
+  })
+);
+console.log(
+  _get(
+    _find(users, function(user) {
+      return user.id == 50;
+    }),
+    "name"
+  )
+);
+_go(
+  users,
+  _find(function(user) {
+    return user.id == 50;
+  }),
+  _get("name"),
+  console.log
+);
+
+console.log(
+  _find_index(users, function(user) {
+    return user.id == 50;
+  })
+);
