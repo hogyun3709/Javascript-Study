@@ -141,6 +141,7 @@ console.log(_pluck(users, "age"));
 
 //2. _filter
 
+
 // -reject
 function _negate(fns) {
   return function(val) {
