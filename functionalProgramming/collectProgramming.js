@@ -7,7 +7,7 @@
 var users = [
   { id: 10, name: "ID", age: 36 },
   { id: 20, name: "BJ", age: 21 },
-  { id: 30, name: "FJ", age: 34 },
+  { id: 30, name: "FJ", age: 36 },
   { id: 40, name: "BS", age: 51 },
   { id: 50, name: "AW", age: 12 },
   { id: 60, name: "VI", age: 21 },
@@ -293,10 +293,103 @@ console.log(
 _go(
   users,
   _filter(user => user.age >= 30),
-  _min_by(function(user){
-  //_min_by(user => user.age)
-  //_min_by(_get('age'))
-    return user.age
+  _min_by(function(user) {
+    //_min_by(user => user.age)
+    //_min_by(_get('age'))
+    return user.age;
   }),
   console.log
-)
+);
+
+// group_by, push
+
+function _push(obj, key, val) {
+  (obj[key] = obj[key] || []).push(val);
+  return obj;
+}
+
+var _group_by = _curryr(function(data, iter) {
+  return _reduce(
+    data,
+    function(grouped, val) {
+      return _push(grouped, iter(val), val);
+    },
+    {}
+  );
+});
+
+// var _group_by = _curryr(function(data, iter){
+//   return _reduce(data, function(grouped, val){
+//     var key = iter(val);
+//     (grouped[key] = grouped[key] || []).push(val);
+//     return grouped
+//   }, {})
+// })
+
+// same ages
+_go(
+  users,
+  _group_by(function(user) {
+    return user.age;
+  }),
+  console.log
+);
+
+// 연령대
+_go(
+  users,
+  _group_by(function(user) {
+    return user.age - user.age % 10;
+  }),
+  console.log
+);
+
+// count_by
+
+var _inc = function(count, key) {
+  count[key] ? count[key]++ : (count[key] = 1);
+  return count;
+};
+var _count_by = _curryr(function(data, iter) {
+  return _reduce(
+    data,
+    function(count, val) {
+      return _inc(count, iter(val));
+    },
+    {}
+  );
+});
+
+// var _count_by = _curryr(function(data, iter) {
+//   return _reduce(
+//     data,
+//     function(count, val) {
+//       var key = iter(val);
+//       count[key] ? count[key]++ : (count[key] = 1);
+//       return count;
+//     },
+//     {}
+//   );
+// });
+
+console.log(
+  _count_by(users, function(user) {
+    return user.age;
+  })
+);
+
+_go(
+  users,
+  _count_by(function(user) {
+    return user.age - user.age % 10;
+  }),
+  console.log
+);
+// 앞글자로 시작하는 이름
+_go(
+  users,
+  _count_by(function(user) {
+    return user.name[0];
+  }),
+  console.log
+);
