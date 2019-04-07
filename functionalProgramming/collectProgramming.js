@@ -86,15 +86,15 @@ function _keys(obj) {
 function _each(list, iter) {
   const keys = _keys(list);
   for (var i = 0, len = keys.length; i < len; i++) {
-    iter(list[keys[i]]);
+    iter(list[keys[i]], keys[i]);
   }
   return list;
 }
 function _map(list, mapper) {
   var new_list = [];
 
-  _each(list, function(val) {
-    new_list.push(mapper(val));
+  _each(list, function(val, key) {
+    new_list.push(mapper(val, key));
   });
   return new_list;
 }
@@ -393,3 +393,37 @@ _go(
   }),
   console.log
 );
+
+// pairs
+
+// var pairs = _map(function(val,key){
+//   return [key, val]
+// })
+
+var pairs = _map((val,key) => [key, val])
+
+_map([1,2,3,], console.log)
+_map(users[0], function(val, key){
+  console.log(val, key);
+})
+
+console.log(_map(users[0], function(val, key){
+  return [key, val]
+}));
+
+console.log(pairs(users[0]));
+
+console.clear();
+
+_go(users,
+  _filter(function(user){
+    return user.age >= 20
+  }),
+  _count_by(function(user){
+    return user.age - user.age % 10;
+  }),
+  _map(function(count, key){
+    return `${key}대는 ${count} 명입니다.`;
+  }),
+  console.log
+)
