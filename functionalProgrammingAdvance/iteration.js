@@ -17,3 +17,33 @@ for (const a of map) console.log(a);
 for (const a of map.keys()) console.log(a);
 for (const a of map.values()) console.log(a);
 for (const a of map.entries()) console.log(a);
+
+const iterable = {
+  [Symbol.iterator](){
+    let i = 3;
+    return {
+      next(){
+        return i == 0 ? { done: true} : { value: i--, done: false }
+        //Well-formed iterator 를 만드는 요소
+      },
+      [Symbol.iterator](){return this}
+    }
+  }
+}
+
+let iterator = iterable[Symbol.iterator]();
+
+iterator.next()
+iterator.next()
+
+// console.log(iterator.next());
+// console.log(iterator.next());
+// console.log(iterator.next());
+// console.log(iterator.next());
+for (const a of iterator) console.log(a);
+
+//
+// const arr2 = [1,2,3];
+// let iter2 = arr2[Symbol.iterator]();
+// iter2.next();
+// for (const a of iter2) console.log(a);
