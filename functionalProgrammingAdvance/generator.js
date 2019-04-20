@@ -1,6 +1,6 @@
 // # Generator = iterator 를 생성하는 함수
 
-function* gen() {
+function *gen() {
   yield 1;
   if (false) yield 2;
   yield 3;
@@ -16,7 +16,7 @@ console.log(iter.next());
 console.log(iter.next());
 
 // # odds
-function* infinity(i = 0) {
+function *infinity(i = 0) {
   while (true) yield i++;
 }
 
