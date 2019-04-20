@@ -8,13 +8,13 @@ const products = [
 
 // iter = iterable protocal 를 따르는 인자
 
-const _map = (f, iter) =>{
+const _map = (f, iter) => {
   let res = [];
-  for (const a of iter){
+  for (const a of iter) {
     res.push(f(a));
   }
   return res;
-}
+};
 
 let names = [];
 for (const a of products) {
@@ -22,9 +22,9 @@ for (const a of products) {
 }
 console.log(names);
 
-console.log(
-  _map(a => a.name, products)
-);
+console.log(_map(a => a.name, products));
+
+// 3 methods to get prices
 
 let prices = [];
 for (const a of products) {
@@ -32,6 +32,25 @@ for (const a of products) {
 }
 console.log(prices);
 
-console.log(
-  _map(a => a.price, products)
-);
+console.log(_map(a => a.price, products));
+
+console.log(products.map(a => a.price));
+
+// mapp's polymorphism based on iterable protocol
+
+function* gen() {
+  yield 2;
+  if (false) yield 3;
+  yield 4;
+}
+
+console.log(_map(a => a * a, gen()));
+
+let m = new Map();
+m.set("a", 10);
+m.set("b", 20);;
+
+console.log(new Map(_map(([keys, values]) => [keys, values * 2], m)));
+
+// return
+// Map(2) { "a" => 20, "b" => 40}
