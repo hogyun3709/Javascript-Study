@@ -44,3 +44,15 @@ const _over20000 = _filter( a => a.price > 20000, products);
 
 console.log(..._under20000);
 console.log(..._over20000);
+
+// Examples
+
+console.log(_filter( values => values % 2, [1,2,3,4,5]));
+
+console.log(_filter( values => values % 2, function *(){
+  yield 1;
+  yield 2;
+  yield 3;
+  yield 4;
+  yield 5;
+} ()));
