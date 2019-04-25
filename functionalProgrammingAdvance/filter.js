@@ -38,6 +38,7 @@ const _filter = (fns, iter) => {
 
 console.log(..._filter(a => a.price < 20000, products));
 console.log(..._filter(a => a.price > 20000, products));
+console.log(...products.filter(currentValue => currentValue.price < 20000));
 
 const _under20000 = _filter( a => a.price < 20000, products);
 const _over20000 = _filter( a => a.price > 20000, products);
