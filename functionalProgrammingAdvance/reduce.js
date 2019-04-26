@@ -48,3 +48,12 @@ console.log(
 console.log(
   [0,1,2,3].reduce((acc, cv) => acc + cv, 0)
 );
+console.log(
+  [0,1,2,3].reduce((acc, cv) => acc + cv)
+);
+
+const reducer = (acc, currValue) => acc + currValue;
+
+console.log(
+  [0,1,2,3].reduce(reducer)
+);
