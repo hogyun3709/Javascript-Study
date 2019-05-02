@@ -41,21 +41,18 @@ const shuffle = (array) => array.sort(() => Math.random() - 0.5);
 
 const item1 = [];
 
-function searchHiddenAbility(lgendaryAbilityLists, quantity) {
+function searchHiddenAbility(lgendaryAbilityLists) {
   let newAbilityList = [];
   let shuffledAbilityList = shuffle(legendaryAbilityLists);
 
   shuffledAbilityList.forEach(function(item){
     if (item.value > 10){
-      return newAbilityList.push(item.name + item.value + "%")
+      return newAbilityList.push(item.name + "+" + item.value + "%")
     } else
-    return newAbilityList.push(item.name + item.value)
+    return newAbilityList.push(item.name + "+" + item.value)
   })
 
-  console.log(newAbilityList.slice(0,3));
-
-
-
+  return newAbilityList.slice(0,3)
 }
 
-console.log(searchHiddenAbility());
+console.log(searchHiddenAbility(legendaryAbilityLists));
