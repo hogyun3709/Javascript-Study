@@ -8,4 +8,12 @@ const generate_address = () => {
   }
   return result;
 };
-console.log(generate_address());
+
+const user_wallet_address = (coin_type) => {
+  let res = [];
+  res.push(coin_type)
+  res.push(generate_address());
+  return res
+}
+
+console.log(user_wallet_address("medx"))
