@@ -2,14 +2,14 @@ bubbleSort = (array) => {
   let swapped = false
   do {
     swapped = false
-    array.forEach((current, i) => {
-      if (current > array[i + 1]) {
-        const key = current
+    array.forEach((currentValue, index) => {
+      if (currentValue> array[index + 1]) {
+        const key = currentValue 
         console.log(array.join(' '))
         // this line enables swap the elements
-        array[i] = array[i + 1]
+        array[index] = array[index + 1]
         // console.log(array[i])
-        array[i + 1] = key
+        array[index + 1] = key
         // console.log(array[i + 1])
         swapped = true
       }
