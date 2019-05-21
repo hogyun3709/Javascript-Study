@@ -1,3 +1,5 @@
+const L = {};
+
 const curry = f => (a, ..._) => _.length ? f(a, ..._) : (..._) => f(a, ..._);
 
 const _map = curry((f, iter) => {
@@ -30,11 +32,19 @@ const _reduce = curry((fns, acc, iter) => {
 });
 
 const _go = (...args) => _reduce((a, fns) => fns(a), args);
+const _pipe = (f, ...fns) => (...args) => _go(f(...args), ...fns)
 
-const queryStr = obj => go(
-  obj,
+
+// const _queryStr = obj => _go(
+//   obj,
+//   Object.entries,
+//   _map(([k,v]) => `${k}:${v}`),
+//   _reduce((a,b) => `${a}&${b}`)
+// )
+const _queryStr = _pipe(
   Object.entries,
-  map(([k,v] => `${k}:${v}`))
+  _map(([k,v]) => `${k}:${v}`),
+  _reduce((a,b) => `${a}&${b}`)
 )
 
-console.log(queryStr({limit: 10, offset: 10, type: 'notice'}));
+console.log(_queryStr({limit: 10, offset: 10, type: 'notice'}));

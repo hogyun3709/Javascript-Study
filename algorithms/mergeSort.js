@@ -10,12 +10,12 @@ mergeSort = (array) => {
   console.log("Array of B: " + arrayB);
   // recursively call mergeSort(arrayA)
   // mergeSort(arrayA) calls first, mergeSort(arrayB) calls next,
+  // while sort(mergeSort(arrayA)) executes, it creates new sub arrayA and arrayB data sets to sort the values
   return sort(mergeSort(arrayA), mergeSort(arrayB))
 }
 
 sort = (arrayA, arrayB) => {
-  // console.log("Array of A: " + arrayA);
-  // console.log("Array of B: " + arrayB);
+  console.log("Values are ready: " +  "ArrayA: " + arrayA + "," + " arrayB: "+ arrayB);
   const sorted = []
 
   while (arrayA.length && arrayB.length) {
@@ -24,37 +24,21 @@ sort = (arrayA, arrayB) => {
     } else {
       sorted.push(arrayB.shift())
     }
-    console.log("Sorted: " + sorted);
+    console.log("Instant Sorted: " + sorted);
   }
   const output = [
     ...sorted,
     ...arrayA,
     ...arrayB
   ]
-  console.log("Output: " + output)
+  console.log("Sorted: " + sorted);
+  console.log("arrayA: " + arrayA);
+  console.log("arrayB: " + arrayB);
+  console.log("Sorted Output: " + output)
+
   return output
 }
 
-const numbers = [
-  8,
-  5,
-  17,
-  6,
-  9,
-  19,
-  3,
-  12,
-  16,
-  20,
-  1,
-  4,
-  15,
-  11,
-  2,
-  7,
-  13,
-  18,
-  10,
-  14,
-]
-console.log(mergeSort(numbers))
+const numbers = [8, 5, 6, 9, 3, 1, 4, 2, 7, 10]
+
+console.log(mergeSort(numbers));
