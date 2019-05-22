@@ -4,8 +4,8 @@ bubbleSort = (array) => {
     swapped = false
     array.forEach((currentValue, index) => {
       if (currentValue> array[index + 1]) {
-        const key = currentValue 
-        console.log(array.join(' '))
+        const key = currentValue
+        // console.log(array.join(' '))
         // this line enables swap the elements
         array[index] = array[index + 1]
         // console.log(array[i])
@@ -16,7 +16,7 @@ bubbleSort = (array) => {
     })
   } while(swapped)
   //this line shows the last sort result
-  console.log(array.join(' '))
+  // console.log(array.join(' '))
   return array
 }
 
