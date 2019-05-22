@@ -60,7 +60,7 @@ const _map = curry(_pipe(L.map, take(Infinity)));
 // console.log(flatten([[1,2],[3,4],[5,6,7]].map(a => a.map(a => a*a))));
 
 L.flatMap = curry(_pipe(L.map, L.flatten));
-const flatMap = curry(_pipe(L.flatMap, flatten));
+const flatMap = curry(_pipe(L.map, flatten));
 
 var it = L.flatMap(_map(a => a * a), [[1, 2], [3, 4], [5, 6, 7]]);
 

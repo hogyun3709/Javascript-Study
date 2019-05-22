@@ -13,9 +13,9 @@ const curry = f => (a, ..._) => (_.length ? f(a, ..._) : (..._) => f(a, ..._));
 const isIterable = a => a && a[Symbol.iterator];
 const take = curry((limit, iter) => {
   let res = [];
-  for (const a of iter){
+  for (const a of iter) {
     res.push(a);
-    if(res.length == limit) return res;
+    if (res.length == limit) return res;
   }
   return res;
 });
@@ -37,26 +37,27 @@ L.range = function*(l) {
 };
 
 L.map = curry(function*(fns, iter) {
-  for (const a of iter){
+  for (const a of iter) {
     yield fns(a);
   }
 });
 L.filter = curry(function*(fns, iter) {
-  for (const a of iter){
+  for (const a of iter) {
     if (fns(a)) yield a;
   }
 });
-L.flatMap = curry(pipe(L.map, L.flatten));
 L.flatten = function*(iter) {
   for (const a of iter) {
     if (isIterable(a)) yield* a;
     else yield a;
   }
 };
+L.flatMap = curry(pipe(L.map, L.flatten));
+
 const flatten = pipe(L.flatten, take(Infinity));
 const map = curry(pipe(L.map, take(Infinity)));
 const filter = curry(pipe(L.filter, take(Infinity)));
-const flatMap = curry(pipe(L.flatMap, flatten));
+const flatMap = curry(pipe(L.map, flatten));
 /* Relevent Code starts from here */
 
 const arr = [
