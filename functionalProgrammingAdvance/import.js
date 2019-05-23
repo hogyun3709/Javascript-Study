@@ -19,16 +19,7 @@ const take = curry((limit, iter) => {
   }
   return res;
 });
-const reduce = curry((fns, acc, iter) => {
-  if (!iter) {
-    iter = acc[Symbol.iterator]();
-    acc = iter.next().value;
-  }
-  for (const a of iter) {
-    acc = fns(acc, a);
-  }
-  return acc;
-});
+
 L.range = function*(l) {
   let i = -1;
   while (++i < l) {
@@ -58,4 +49,26 @@ const flatten = pipe(L.flatten, take(Infinity));
 const map = curry(pipe(L.map, take(Infinity)));
 const filter = curry(pipe(L.filter, take(Infinity)));
 const flatMap = curry(pipe(L.map, flatten));
+
+const go1 = (a, f) => a instanceof Promise ? a.then(f) : f(a);
+
+const reduce = curry((fns, acc, iter) => {
+  if (!iter) {
+    iter = acc[Symbol.iterator]();
+    acc = iter.next().value;
+  } else {
+    iter = iter[Symbol.iterator]();
+  }
+  // 초기 값이 promise 여도 go 1 함수로 처리 가능
+  return go1(acc, function recur(acc){
+    let cur;
+    while (!(cur = iter.next()).done) {
+      const a = cur.value;
+      acc = fns(acc, a);
+      if (acc instanceof Promise) return acc.then(recur);
+    }
+    return acc;
+  });
+});
+
 /* Relevent Code starts from here */
