@@ -131,14 +131,19 @@ C.reduce = curry((fns, acc, iter) => {
     reduce(fns, acc, iterCheck):
     reduce(fns, iterCheck)});
 
+C.take = curry((limit, iter) => take(limit, catchNoop([...iter])));
+
+C.takeAll = C.take(Infinity);
+
+C.map = curry(pipe(L.map, C.takeAll))
+
+C.filter = curry(pipe(L.filter, C.takeAll))
+
 const delay500 = a => new Promise(resolve => {
   console.log('hi');
   setTimeout(() => resolve(a), 500)
 });
 
-console.time('')
-
-C.take = curry((limit, iter) => take(limit, catchNoop([...iter])));
 
 //C.reduce 를 사용시 hi 가 5번 연속적으로 실행됨
 //병렬적인 실행
@@ -151,3 +156,8 @@ go([1,2,3,4,5],
   console.log,
   _ => console.timeEnd('')
 )
+/* 즉시 병렬적으로 평가하기: C.map, C.filter*/
+// 특정 함수 라인에서마 병렬적으로 평가하기
+
+C.map(a => delay500(a * a), [1,2,3,4]).then(console.log);
+C.filter(a => delay500(a % 2), [1,2,3,4]).then(console.log);
