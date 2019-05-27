@@ -139,25 +139,49 @@ C.map = curry(pipe(L.map, C.takeAll))
 
 C.filter = curry(pipe(L.filter, C.takeAll))
 
-const delay500 = a => new Promise(resolve => {
-  console.log('hi');
+
+
+// //C.reduce 를 사용시 hi 가 5번 연속적으로 실행됨
+// //병렬적인 실행
+// go([1,2,3,4,5],
+//   L.map(a => delay500(a * a)),
+//   L.filter(a => delay500( a % 2)),
+//   L.map(a => delay500(a * a)),
+//   C.take(2),
+//   reduce(add),
+//   console.log,
+//   _ => console.timeEnd('')
+// )
+// /* 즉시 병렬적으로 평가하기: C.map, C.filter*/
+// // 특정 함수 라인에서만 병렬적으로 평가하기
+//
+// C.map(a => delay500(a * a), [1,2,3,4]).then(console.log);
+// C.filter(a => delay500(a % 2), [1,2,3,4]).then(console.log);
+
+/*즉시, 지연, Promise, 병렬 함수 조합하기*/
+const delay500 = (a, name) => new Promise(resolve => {
+  console.log( `${name}: ${a}`);
   setTimeout(() => resolve(a), 500)
 });
 
+//
+console.time('');
 
-//C.reduce 를 사용시 hi 가 5번 연속적으로 실행됨
-//병렬적인 실행
-go([1,2,3,4,5],
-  L.map(a => delay500( a * a)),
-  L.filter(a => delay500( a % 2)),
-  L.map(a => delay500( a * a)),
-  C.take(2),
-  reduce(add),
+go([1,2,3,4,5,6,7,8],
+  map(a => delay500(a *a, 'map 1')),
+  filter(a => delay500(a % 2, 'filter 2')),
+  map(a => delay500(a + 1, 'map 3 ')),
+  take(2),
   console.log,
   _ => console.timeEnd('')
 )
-/* 즉시 병렬적으로 평가하기: C.map, C.filter*/
-// 특정 함수 라인에서마 병렬적으로 평가하기
 
-C.map(a => delay500(a * a), [1,2,3,4]).then(console.log);
-C.filter(a => delay500(a % 2), [1,2,3,4]).then(console.log);
+// 부하를 줄이는 연산
+go([1,2,3,4,5,6,7,8],
+  L.map(a => delay500(a *a, 'map 1')),
+  L.filter(a => delay500(a % 2, 'filter 2')),
+  L.map(a => delay500(a + 1, 'map 3 ')),
+  C.take(2),
+  console.log,
+  _ => console.timeEnd('')
+)
