@@ -123,13 +123,18 @@ const range = l => {
 /* 지연된 함수열을 병력적으로 평가해보자 - C.reduce, C.take */
 const C = {};
 function noop(){}
-const catchNoop = arr => (arr.forEach( a => a instanceof Promise ? a.catch(noop) : a), arr);
+const catchNoop = ([...arr]) => (arr.forEach( a => a instanceof Promise ? a.catch(noop) : a), arr);
 
 C.reduce = curry((fns, acc, iter) => {
-  const iterCheck = catchNoop(iter ? [...iter] : [...acc]);
   return iter ?
-    reduce(fns, acc, iterCheck):
-    reduce(fns, iterCheck)});
+    reduce(fns, acc, catchNoop(iter)):
+    reduce(fns, catchNoop(acc))});
+
+// C.reduce = curry((fns, acc, iter) => {
+//   const iterCheck = catchNoop(iter ? [...iter] : [...acc]);
+//   return iter ?
+//     reduce(fns, acc, iterCheck):
+//     reduce(fns, iterCheck)});
 
 C.take = curry((limit, iter) => take(limit, catchNoop([...iter])));
 
@@ -166,15 +171,6 @@ const delay500 = (a, name) => new Promise(resolve => {
 
 //
 console.time('');
-
-go([1,2,3,4,5,6,7,8],
-  map(a => delay500(a *a, 'map 1')),
-  filter(a => delay500(a % 2, 'filter 2')),
-  map(a => delay500(a + 1, 'map 3 ')),
-  take(2),
-  console.log,
-  _ => console.timeEnd('')
-)
 
 // 부하를 줄이는 연산
 go([1,2,3,4,5,6,7,8],
