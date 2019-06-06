@@ -27,3 +27,19 @@ const randomNumberArray = () => {
 }
 
 randomNumberArray();
+
+const executePapyrus = () => {
+  let firstTrial = randomNumberArray();
+  console.log(firstTrial[0]);
+  console.log(firstTrial[1]);
+  console.log(firstTrial[2]);
+  console.log("( " + firstTrial[0] + " + " + "?" + " )" + " X " + " ? ");
+  console.log("( " + firstTrial[0] + " + " + firstTrial[1] + " )" + " X " + " ? ");
+  console.log("( " + firstTrial[0] + " + " + firstTrial[1] + " )" + " X " + firstTrial[2]);
+
+  return (firstTrial[0] + firstTrial[1]) * firstTrial[2]
+}
+
+executePapyrus()
+
+// for further feature let user have once chance to switch the integers
