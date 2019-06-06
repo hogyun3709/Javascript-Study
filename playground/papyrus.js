@@ -1,27 +1,29 @@
 const min = 1;
 const max = 20;
 
-const randomNumber= (max, min) => {
+const generateRandNumber = (max, min) => {
   return Math.floor(Math.random() * (max - min) + min)
 }
-console.log(randomNumber(max, min));
 
-
-function randomFirst(){
-  return new Promise(resolve => setTimeout(() => 
-    resolve(randomNumber(max, min)), 1000))
+const createArray = (el) => {
+  let arr = [];
+  for(let i = 0; i < el; i++){
+    let randomNumber = generateRandNumber(max, min);
+    arr.push(randomNumber);
+    if (arr[i - 1] === arr[i]){
+      arr.pop()
+      i--
+    }
+    if (arr[i - 2] === arr[i]){
+      arr.pop()
+      i--
+    }
+  }
+  return arr;
 }
 
-function randomSecond(){
-  return new Promise(resolve => setTimeout(() =>
-    resolve(randomNumber(max, min)), 5000))
+const randomNumberArray = () => {
+  return createArray(3);
 }
 
-function randomThrid(){
-  return new Promise(resolve => setTimeout(() =>
-    resolve(randomNumber(max, min)), 10000))
-}
-
-randomFirst().then(console.log);
-randomSecond().then(console.log);
-randomThrid().then(console.log);
+randomNumberArray();
