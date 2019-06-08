@@ -12,34 +12,34 @@
 1. 홀수 n개 더하기 - Imperative Programming
 
 <script>
-  function f1(limit, list) {
-    let acc = 0;
-    for (const a of list) {
-      if (a % 2) {
-        const b = a * a;
-        acc += b;
-        if (--limit == 0) break;
-      }
+function f1(limit, list) {
+  let acc = 0;
+  for (const a of list) {
+    if (a % 2) {
+      const b = a * a;
+      acc += b;
+      if (--limit == 0) break;
     }
-    console.log(acc);
   }
-  f1(3, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+  console.log(acc);
+}
+f1(3, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 </script>
 
 2. if를 filter로 - iterable programming
 
 <script>
-  function f2(limit, list) {
-    let acc = 0;
-    for (const a of L.filter(a => a % 2, list)) {
-      const b = a * a;
-      acc += b;
-      if (--limit == 0) break;
-    }
-    console.log(acc);
+function f2(limit, list) {
+  let acc = 0;
+  for (const a of L.filter(a => a % 2, list)) {
+    const b = a * a;
+    acc += b;
+    if (--limit == 0) break;
   }
+  console.log(acc);
+}
 
-  f2(3, [1, 2, 3, 4, 5, 6, 7, 8, 9]);
+f2(3, [1, 2, 3, 4, 5, 6, 7, 8, 9]);
 </script>
 
 </body>
@@ -47,25 +47,53 @@
 
 3. 값 변화후 변수 할당을 map 으로
 <script>
-  function f3(limit, list) {
-    let acc = 0;
-    for (const a of L.map(a => a * a, L.filter(a => a % 2, list))) {
-      acc += a;
-      if (--limit == 0) break;
-    }
-    console.log(acc);
+function f3(limit, list) {
+  let acc = 0;
+  for (const a of L.map(a => a * a, L.filter(a => a % 2, list))) {
+    acc += a;
+    if (--limit == 0) break;
   }
+  console.log(acc);
+}
 
-  f3(3, [1, 2, 3, 4, 5, 6, 7, 8, 9]);
+f3(3, [1, 2, 3, 4, 5, 6, 7, 8, 9]);
 </script>
-<script>
-  function f4(limit, list){
-    let acc = 0;
-    for (const a of L.take(limit, L.map( a => a * a, L.filter(a => a % 2, list))))  {
-      acc += a;
-    }
-    console.log(acc);
-  }
-  f4(3, [1,2,3,4,5,6,7,8,9])
 
+4. Break 를 take 로
+<script>
+function f4(limit, list) {
+  let acc = 0;
+  for (const a of L.take(
+    limit,
+    L.map(a => a * a, L.filter(a => a % 2, list))
+  )) {
+    acc += a;
+  }
+  console.log(acc);
+}
+f4(3, [1, 2, 3, 4, 5, 6, 7, 8, 9]);
+</script>
+
+5. 축약 및 합산을 reduce로
+<script>
+const add = (a,b) => a + b
+function f5(limit, list){
+  console.log(
+    _.reduce(add,
+      L.take(limit,
+        L.map(a => a * a,
+          L.filter(a => a % 2, list)
+        ))
+    )
+  )
+  _.go(
+    list,
+    L.filter(a => a % 2),
+    L.map(a => a * a),
+    L.take(limit),
+    _.reduce(add),
+    console.log
+  )
+}
+f5(3, [1, 2, 3, 4, 5, 6, 7, 8, 9]);
 </script>

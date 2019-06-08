@@ -35,3 +35,25 @@ function f4(limit, list){
   console.log(acc);
 }
 f4(3, [1,2,3,4,5,6,7,8,9])
+
+// Reduce 로 합산 하기 
+const add = (a,b) => a + b
+function f5(limit, list){
+  console.log(
+    _.reduce(add,
+      L.take(limit,
+        L.map(a => a * a,
+          L.filter(a => a % 2, list)
+        ))
+    )
+  )
+  _.go(
+    list,
+    L.filter(a => a % 2),
+    L.map(a => a * a),
+    L.take(limit),
+    _.reduce(add),
+    console.log
+  )
+}
+f5(3, [1, 2, 3, 4, 5, 6, 7, 8, 9]);
