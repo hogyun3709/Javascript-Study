@@ -7,19 +7,26 @@ const generateRandNumber = (max, min) => {
 
 const createArray = (el) => {
   let arr = [];
-  for(let i = 0; i < el; i++){
+  for (let i = 0; i < el; i++) {
     let randomNumber = generateRandNumber(max, min);
     arr.push(randomNumber);
-    if (arr[i - 1] === arr[i]){
+    if (arr[i - 1] === arr[i]) {
       arr.pop()
       i--
     }
-    if (arr[i - 2] === arr[i]){
+    if (arr[i - 2] === arr[i]) {
       arr.pop()
       i--
     }
   }
   return arr;
+}
+const shuffleArray = (array) => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
 }
 
 const randomNumberArray = () => {
@@ -28,7 +35,7 @@ const randomNumberArray = () => {
 
 randomNumberArray();
 
-const executePapyrus = () => {
+const executePapyrus = (userInput) => {
   let firstTrial = randomNumberArray();
   console.log(firstTrial[0]);
   console.log(firstTrial[1]);
@@ -36,7 +43,10 @@ const executePapyrus = () => {
   console.log("( " + firstTrial[0] + " + " + "?" + " )" + " X " + " ? ");
   console.log("( " + firstTrial[0] + " + " + firstTrial[1] + " )" + " X " + " ? ");
   console.log("( " + firstTrial[0] + " + " + firstTrial[1] + " )" + " X " + firstTrial[2]);
-
+  if (userInput === 'yes') {
+    shuffleArray(firstTrial);
+    console.log("( " + firstTrial[0] + " + " + firstTrial[1] + " )" + " X " + firstTrial[2]);
+  }
   return (firstTrial[0] + firstTrial[1]) * firstTrial[2]
 }
 
