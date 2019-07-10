@@ -1,4 +1,4 @@
-const s = 'try hello world'
+const s = 'javascript is fun'
 
 function solution(s) {
     var answer = '';
