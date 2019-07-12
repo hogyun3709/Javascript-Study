@@ -9,7 +9,6 @@ function solution(priorities, l) {
       index: index
     };
   });
-  console.log(arr);
   let queue = [];
   /*
     결국 priority 가 큰 순으로 queue 에 정리가 된다
@@ -34,10 +33,11 @@ function solution(priorities, l) {
       queue.push(targetElement);
     }
   }
-  /* use findIndex, to find 맵핑으로 설정해놓은 고유값으로 만든 index */
-  queue.findIndex(queueElement => queueElement === l)
-  /* 순서를 return 해야하니, index 값에 + 1 을 해준다. */
-  return ansawer + 1;
+  /*
+    use findIndex, to find 맵핑으로 설정해놓은 고유값으로 만든 index
+    순서를 return 해야하니, index 값에 + 1 을 해준다. *
+  */
+  return queue.findIndex(queueElement => queueElement.index === l) + 1;
 }
 
 console.log(solution(priorities, l));
