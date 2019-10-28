@@ -96,4 +96,29 @@ function f5(limit, list){
   )
 }
 f5(3, [1, 2, 3, 4, 5, 6, 7, 8, 9]);
+console.clear();
+</script>
+6. while 을 range 로
+<script>
+  function f6(end){
+    let i = 0;
+    while (i < end){
+      console.log(i);
+      i++
+    }
+  }
+
+  function f6_1(end){
+    let i = 1;
+    while (i < end){
+      console.log(i)
+      i += 2;
+    }
+  }
+  function f6_2(end){
+    _.each(console.log, L.range(1, end, 2));
+  }
+  f6(10);
+  f6_1(10);
+  f6_2(10);
 </script>
