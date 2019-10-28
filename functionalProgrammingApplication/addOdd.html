@@ -121,4 +121,18 @@ console.clear();
   f6(10);
   f6_1(10);
   f6_2(10);
+  console.clear();
+</script>
+
+7. 별그리기
+<script>
+  _.go(
+    L.range(1, 6),
+    L.map(L.range),
+    L.map(L.map(_ => '*')),
+    L.map(_.reduce((a,b) => `${a}${b}`)),
+    _.reduce((a,b) => `${a}\n${b}`),
+    console.log
+
+  )
 </script>

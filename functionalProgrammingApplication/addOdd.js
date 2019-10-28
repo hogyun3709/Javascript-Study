@@ -81,3 +81,23 @@ function f6_2(end){
 f6(10);
 f6_1(10);
 f6_2(10);
+
+// each는 어떠한 부수 효과를 가져올 것이다라는 convention을 담고 있다.
+function checkEach(end){
+  _.go(
+    L.range(1, end, 2),
+    _.each(console.log)
+  )
+}
+checkEach([1,2,3])
+
+// 별그리기 range 와 reduce
+_.go(
+  L.range(1, 6),
+  L.map(L.range),
+  L.map(L.map(_ => '*')),
+  L.map(_.reduce((a,b) => `${a}${b}`)),
+  _.reduce((a,b) => `${a}\n${b}`),
+  console.log
+
+)
