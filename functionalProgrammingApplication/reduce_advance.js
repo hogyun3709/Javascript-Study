@@ -23,3 +23,32 @@ const ages = L.map(user => user.age);
 console.log(
   _.reduce(add, ages(users))
 );
+
+console.log(
+  _.reduce((total, user) => {
+    if(user.age >= 30) return total;
+    return total + user.age;
+  }, 0, users),
+  'if statement'
+)
+/* 삼항 연산자로 보기에만 간단히*/
+console.log(
+  _.reduce((total, user) => user.age >= 30 ? total : total + user.age, 0, users),
+  'ternary operator'
+)
+/* filter 로 30세 미만의 나이를 합산*/
+console.log(
+  _.reduce((total, user) => total + user.age,
+  0,
+  _.filter(user => user.age < 30, users)),
+  'filter'
+)
+console.log(
+  _.reduce(add,
+    /* 결국 합산하는 목적을 가진 함수이기에 add reducer 함수를 실행시키겠다고 선언.*/
+    /* (total, user) => total + user.age 는 add 로 대체된다.*/
+    /* 유저 배열의 age 만 맵으로 뽑겠다. */
+    _.map(user => user.age,
+      _.filter(user => user.age < 30, users))),
+  'map & filter'
+)
