@@ -52,3 +52,38 @@ console.log(
       _.filter(user => user.age < 30, users))),
   'map & filter'
 )
+
+/* query 만들기 */
+
+const obj1 = {
+  a: 1,
+  b: undefined,
+  c: "CC",
+  d: "DD"
+};
+function query1(obj) {
+  /* 누적하여 한줄로 만들수 있음*/
+  let res = "";
+  for (const key in obj) {
+    /* obj1 의 key 값을 추출 */
+    // console.log(a)
+    /* obj1 의 value 값을 추출 */
+    const value = obj[key];
+    if (value === undefined) continue;
+    if (res != '') res += '&';
+    // console.log(key + '=' + value)
+
+    res += key + "=" + value;
+  }
+  return res;
+}
+console.log(query1(obj1));
+
+function query2(obj) {
+  return Object.entries(obj)
+    .reduce((query, [k, v], i) => {
+      if(v === undefined) return query;
+      return query + (i > 0 ? '&' : '') + k + '=' + v;
+    }, '')
+}
+console.log(query2(obj1))
