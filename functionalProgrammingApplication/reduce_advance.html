@@ -123,6 +123,24 @@ function query3(obj) {
   );
 }
 console.log(query3(obj1));
+
+/* join 을 만들어 조금 더 간결하게 */
+
+const join = _.curry((sep, iter) =>
+  _.reduce((a,b) => `${a}${sep}${b}`, iter));
+
+const query4 = obj =>
+  join('&',
+    _.map(([k, v]) => `${k}=${v}`,
+      _.reject(([_, v]) => v === undefined,
+        Object.entries(obj)
+      )
+    )
+  )
+console.log(query5(obj1), 'query 4')
+
+
+
 </script>
 </body>
 </html>

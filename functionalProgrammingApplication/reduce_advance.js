@@ -87,3 +87,36 @@ function query2(obj) {
     }, '')
 }
 console.log(query2(obj1))
+
+/* 함수형 프로그래밍에서는 쓰지않 변수를 _ 로 처리함 원래 들어가야할 변수는 key 값*/
+function query3(obj) {
+  return (
+    /* reduce로 축약하여 a,b 로 들어오는 key와 value쌍 사이에 값을 삽입*/
+    _.reduce(
+      (a, b) => `${a}&${b}`,
+      /* 같은 자료의 형으로 변환한 다음,*/
+      _.map(
+        ([k, v]) => `${k}=${v}`,
+        /* _.filter(([k, v]) => !== undefined, Object.entries(obj)) */
+        /* undefined 를 걸러내고, */
+        _.reject(([_, v]) => v === undefined, Object.entries(obj))
+      )
+    )
+  );
+}
+console.log(query3(obj1));
+
+/* join 을 만들어 조금 더 간결하게 */
+
+const join = _.curry((sep, iter) =>
+  _.reduce((a,b) => `${a}${sep}${b}`, iter));
+
+const query4 = obj =>
+  join('&',
+    _.map(([k, v]) => `${k}=${v}`,
+      _.reject(([_, v]) => v === undefined,
+        Object.entries(obj)
+      )
+    )
+  )
+console.log(query5(obj1), 'query 4')
