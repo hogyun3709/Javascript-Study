@@ -137,8 +137,21 @@ const query4 = obj =>
       )
     )
   )
-console.log(query5(obj1), 'query 4')
+console.log(query4(obj1), 'query 4')
 
+/* go를 사용하여 조금 더 직관적이게 */
+
+/* go 대신 pipe로 obj 를 받아오는 부분을 간결하게 만들수 있음*/
+const query5 = obj => _.go(
+  obj,
+  Object.entries,
+  _.reject(([_, v]) => v === undefined),
+  _.map(join('=')),
+  /* _.map(([k, v]) => `${k}=${v}`), */
+  join('&')
+)
+
+console.log(query5(obj1));
 
 
 </script>
