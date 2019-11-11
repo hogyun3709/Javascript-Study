@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>01/1</title>
+  <title>01/2</title>
   <script src="./fx.js"></script>
 </head>
 <body>
@@ -153,7 +153,19 @@ const query5 = obj => _.go(
 
 console.log(query5(obj1));
 
+</script>
+<script>
+  console.clear();
+  const split = _.curry((sep, str) => str.split(sep));
+  /* 문제를 단순화 시키고 잘게 쪼개며 생각하기 */
+  const queryToObject = _.pipe(
+    split('&'),
+    _.map(split('=')),
+    _.map(([k, v]) => ({[k]: v})),
+    _.reduce(Object.assign)
+  )
 
+  console.log(queryToObject('a=1&c=CC&d=DD'))
 </script>
 </body>
 </html>
