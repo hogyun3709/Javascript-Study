@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>객체를 이터러블 프로그래밍으로 다루기</title>
+  <script src="./fx.js"></script>
+</head>
+<body>
+<script>
+ /* key 와 value 쌍으로 가진 객체도 iterable 프로그래밍(동시 및 지연)이 가능하다*/
+  const obj1 = {
+    a: 1,
+    b: 2,
+    c: 3,
+    d: 4
+  }
+</script>
+
+1. values
+
+<script>
+ console.log(Object.values(obj1)) /* (4) [1,2,3,4]*/
+
+ /* Values 를 구현해보자 */
+
+ L.values = function *(obj){
+   for (const k in obj){
+     console.log(k)
+     yield obj[k];
+   }
+ }
+ /*
+  원하는 시점에서 평가가 가능하고, array 출력의 메모리를 제어할수 있다
+  > var it = L.values(obj1);
+  > it = L.take(2, it);
+  > [...it]
+    a
+    b
+ */
+ /* Arr의 크기가 커진다면 컨트롤하기에 용이해짐 */
+
+ _.go(
+   obj1,
+   Object.values,
+   // _.map(a => a + 10),
+   _.reduce((a, b) => a + b),
+   console.log
+ )
+
+ _.go(
+   obj1,
+   L.values,
+   L.map(a => a + 10),
+   L.take(2),
+   _.reduce((a, b) => a + b),
+   console.log
+ )
+</script>
+## 객체를 이터러블 프로그래밍으로 다루기
+
+1. values
+2. entries
+3. keys
+4. 어떠한 값이던 이터러블 프로그래밍으로 다루기
+5. object
+6. mapObject
+7. pick
+8. indexBy
+9. indexBy 된 값을 filter 하기
+
+</body>
+</html>
