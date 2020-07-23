@@ -57,4 +57,17 @@
    _.reduce(Object.assign),
    console.log
  )
+ /* 3. Keys 를 구현해보자*/
+
+   L.keys = function *(obj){
+     for (const k in obj){
+       yield k;
+     }
+   }
+  /* Shows every keys in the obj1 array */
+   _.go(
+     obj1,
+     L.keys,
+     _.each(console.log)
+   )
 </script>

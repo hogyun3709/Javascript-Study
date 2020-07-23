@@ -81,6 +81,24 @@ _.go(
   console.log
 )
  </script>
+
+ 3. keys
+
+ <script>
+
+  L.keys = function *(obj){
+    for (const k in obj){
+      yield k;
+    }
+  }
+ /* Shows every keys in the obj1 array */
+  _.go(
+    obj1,
+    L.keys,
+    _.each(console.log)
+  )
+
+ </script>
 ## 객체를 이터러블 프로그래밍으로 다루기
 
 1. values
