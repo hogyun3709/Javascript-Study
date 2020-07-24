@@ -69,5 +69,25 @@
      obj1,
      L.keys,
      _.each(console.log)
-   )
+)
+ /* 4. 어떠한 값이던 이터러블 프로그래밍으로 다뤄보기 */
+ const g1 = function *(stop){
+   let i = -1;
+   while (++i < stop){
+     yield 10;
+     if (false) yield 20 + 30;
+     yield 30;
+   }
+ }
+
+ console.log([...L.take(3, g1(10))])
+
+ _.go(
+   g1(10),
+   L.take(2),
+   _.reduce((a,b) => a + b),
+   console.log
+ )
+
+
 </script>
