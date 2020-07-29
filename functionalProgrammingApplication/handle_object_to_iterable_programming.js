@@ -89,5 +89,30 @@
    console.log
  )
 
+ /* object 화? */
+ const a = [['a', 1], ['b', 2], ['c', 3]];
+ const b = { a: 1, b:2, c:3 }
 
+ /* 1안 */
+
+ const objectGo = entries => _.go(
+   entries,
+   L.map(([k, v]) => ({[k]: v})),
+   _.reduce(Object.assign)
+ );
+
+ console.log('Entries 배열을 Object: 로',objectGo(a))
+ /* 다형성이 높은 객체임 */
+ const objectReduce = entries =>
+   _.reduce((obj, [k, v]) => (obj[k] = v, obj), {}, entries);
+
+ console.log('Reduce를 활용: ', objectReduce(a))
+
+ /* 사용자 정의 객체가 iterable 관련된 규약을 가지고있음 */
+ let m = new Map();
+ m.set('a', 10);
+ m.set('b', 20);
+ m.set('c', 30);
+ /* m 은 iterable 을 지원함 */
+ console.log('Map: ', objectReduce(m))
 </script>
