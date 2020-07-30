@@ -156,6 +156,17 @@ _.go(
     /* m 은 iterable 을 지원함 */
     console.log('Map: ', objectReduce(m))
   </script>
+
+  6. mapObject
+  <script>
+    const mapObject = (f, obj) => _.go(
+      obj,
+      L.entries,
+      _.map(([k, v]) => [k, f(v)]),
+      objectReduce
+    )
+    console.log(mapObject(a => a + 10, {a: 1, b: 2, c: 3}))
+  </script>
 ## 객체를 이터러블 프로그래밍으로 다루기
 
 1. values

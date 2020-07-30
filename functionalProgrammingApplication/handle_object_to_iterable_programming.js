@@ -115,4 +115,12 @@
  m.set('c', 30);
  /* m 은 iterable 을 지원함 */
  console.log('Map: ', objectReduce(m))
+ /* 6. mapObject */
+   const mapObject = (f, obj) => _.go(
+     obj,
+     L.entries,
+     _.map(([k, v]) => [k, f(v)]),
+     objectReduce
+   )
+   console.log(mapObject(a => a + 10, {a: 1, b: 2, c: 3}))
 </script>
