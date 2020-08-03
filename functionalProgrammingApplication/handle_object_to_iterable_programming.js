@@ -123,4 +123,25 @@
      objectReduce
    )
    console.log(mapObject(a => a + 10, {a: 1, b: 2, c: 3}))
+/* 7. pick */
+/* 함수를 작성할때 유/불리를 잘 생각해보자 (메모리 연산의 관점으로)*/
+ const obj2 = {a: 1, b: 2, c:3, d:4, e:5}
+
+ const pick = (keys, obj) => _.go(
+   keys,
+   _.map(k => [k, obj[k]]),
+   /* 예외 처리 */
+   _.reject(([k, v]) => v === undefined),
+   objectReduce
+ );
+
+ /* pipeline 을 적용하지않고 좀더 간결하게 */
+ /*
+ const pick = (keys, obj) => objectReduce(_.map(k => [k, obj[k]], keys))
+ */
+
+ /* 런타임에서 undefined 는 지양하자(로직의 구분자로만 사용) - 서버에 전달하려고해도 JSON에는 값이 없음*/
+ /* console.log(pick(['b','c','z'], obj2))*/
+ console.log(pick(['b', 'c', 'z'], obj2));
+ //{ b: 2, c: 3}
 </script>
