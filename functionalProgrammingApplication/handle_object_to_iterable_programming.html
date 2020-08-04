@@ -191,6 +191,29 @@ _.go(
     console.log(pick(['b', 'c', 'z'], obj2));
     //{ b: 2, c: 3}
    </script>
+
+   8. indexBy
+   <script>
+   /* index by 로 설정한 값을 key로 value 와같이 출력 할 수 있게끔 하는 함수 */
+   /* find 처럼 array 를 순회하는 것이 아닌, object 의 특정 key를 찾기 때문에 성능적으로 유용함*/
+   /* index by 는 reduce 를 통하여 만들어짐 */
+   const users = [
+     {id: 5, name: 'AA', age: 35},
+     {id: 10, name: 'BB', age: 26},
+     {id: 19, name: 'CC', age: 28},
+     {id: 23, name: 'CC', age: 34},
+     {id: 24, name: 'EE', age: 23}
+   ]
+
+   _.indexBy = (f, iter) =>
+    _.reduce((obj, a) => (obj[f(a)] = a, obj), {}, iter);
+
+   const userIndexBy = _.indexBy(u => u.id, users)
+
+   console.log(userIndexBy)
+
+
+   </script>
 ## 객체를 이터러블 프로그래밍으로 다루기
 
 1. values
