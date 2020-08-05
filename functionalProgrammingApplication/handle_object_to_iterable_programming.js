@@ -163,5 +163,13 @@
  const userIndexBy = _.indexBy(u => u.id, users)
 
  console.log(userIndexBy)
-
+ /* 9. IndexBy 된값을 filtering */
+ _.go(
+   userIndexBy,
+   L.entries,
+   /*구조분해*/
+   _.filter(([_, {age}]) => age < 30),
+   objectReduce,
+   console.log
+ )
 </script>

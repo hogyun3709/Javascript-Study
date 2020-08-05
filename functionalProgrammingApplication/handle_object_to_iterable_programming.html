@@ -213,6 +213,18 @@ _.go(
    console.log(userIndexBy)
 
 
+
+   </script>
+   9. indexBy 값을 filter 하기
+   <script>
+   _.go(
+     userIndexBy,
+     L.entries,
+     /*구조분해*/
+     _.filter(([_, {age}]) => age < 30),
+     objectReduce,
+     console.log
+   )
    </script>
 ## 객체를 이터러블 프로그래밍으로 다루기
 
