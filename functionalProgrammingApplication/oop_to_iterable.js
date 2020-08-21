@@ -97,3 +97,33 @@ _.go(
 )
 console.log(coll)
 </script>
+
+<script>
+/* 이터러블 함수의 조합으로 메서드를 생성 */
+  class Product extends Model {}
+  class Products extends Collection {
+    totalPrice(){
+      return _.go(
+        this,
+        L.map(p => p.get('price')),
+        _.reduce((a, b) => a + b)
+      )
+      /* return _.reduce((a, b) => a + b, L.map(p => p.get('price'), this)) */
+      /*
+        let total = 0;
+        this._models.forEach(product => {
+          total += product.get('price');
+        })
+        return total
+      */
+    }
+  }
+  const products = new Products();
+  products.add(new Product({id: 1, price: 10000 }))
+  console.log(products.totalPrice());
+  products.add(new Product({id: 3, price: 30000 }))
+  console.log(products.totalPrice());
+  products.add(new Product({id: 5, price: 50000 }))
+  console.log(products.totalPrice());
+
+</script>
