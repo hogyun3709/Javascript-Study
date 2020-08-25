@@ -22,12 +22,32 @@ _.go(
   L.map(_.delay(1000)),
   L.filter(a => a % 2),
   L.map(_ => new Date()),
-  L.take(3), // - 최대 3개의 값을 필요하고, 최대 3번의 일을수행 / 최대 3번의 일이 필요로하다
+  L.take(3), // - 최대 3개의 값을 필요하고, 최대 3번의 일을수행 / 최대 3번의 일이 필요로하다 - 지연 평가 - 순차적 호출 및 출력
+  _.take(3), // 즉시평가 - 한번에 모든 call을 출력
   _.each(console.log)
 )
 </script>
 2. takeWhile, takeUntil
+
 <script>
+/* 로직을 작성할때, 어디까지, 언제까지, 선택적으로 실행을 할것이냐 조절이가능*/
+_.go(
+  [1, 2, 3, 4, 5, 6, 7, 8, 0, 0 ],
+  _.takeWhile(a => a),
+  _.each(console.log)
+)
+
+_.go(
+  [1, 2, 3, 4, 5, 6, 7, 8, 0, 0],
+  _.takeUntil(a => a), // 만족하는 값을 찾을때 까지
+  _.each(console.log);
+)
+
+_.go(
+  [0, false, undeifned, null, 10, 20],
+  _.takeUntil(a => a),
+  _.each(console.log)
+)
 
 </script>
 

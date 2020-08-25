@@ -15,3 +15,25 @@ _.go(
   _.each(console.log)
 )
 </script>
+
+<script>
+/* 로직을 작성할때, 어디까지, 언제까지, 선택적으로 실행을 할것이냐 조절이가능*/
+_.go(
+  [1, 2, 3, 4, 5, 6, 7, 8, 0, 0 ],
+  _.takeWhile(a => a),
+  _.each(console.log)
+)
+
+_.go(
+  [1, 2, 3, 4, 5, 6, 7, 8, 0, 0],
+  _.takeUntil(a => a), // 만족하는 값을 찾을때 까지
+  _.each(console.log);
+)
+
+_.go(
+  [0, false, undeifned, null, 10, 20],
+  _.takeUntil(a => a),
+  _.each(console.log)
+)
+
+</script>
