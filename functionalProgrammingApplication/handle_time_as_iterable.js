@@ -37,3 +37,30 @@ _.go(
 )
 
 </script>
+
+<script>
+  /* 일어날 일들에 대하여 각종의 condition(조건) 을 control 할수 있음*/
+  const track = [
+    { cars: ['Chulsu', 'Younghee', 'Chulhee', 'Youngsu']},
+    { cars: ['Harden', 'Curry', 'Durrant', 'Tomson']},
+    { cars: ['Paul', 'Smith', 'Lichard', 'Mccaurry']},
+    { cars: ['SpiderMan', 'IronMan']},
+    { cars: ['']},
+  ]
+
+  _.go(
+    L.range(Infinity),
+    L.map(i => track[i]),
+    /* 4명이 준비완료된 배열만 -> 구조분해 */
+    // L.takeWhile(({ cars }) => cars.length == 4),
+    L.map(({cars}) => cars),
+    L.map(_.delay(1000)),
+    L.takeWhile(cars => cars.length == 4),
+    // L.takeWhile(({length: l}) => l == 4),
+    /* 4명 미만이여도 출발 - takeWhile 을 적용하면 첫배열만 출력*/
+    // L.takeUntil(({length: l}) => l < 4),
+    L.flat,
+    L.map(car => `${car} 출발!`),
+    _.each(console.log)
+  )
+</script>
