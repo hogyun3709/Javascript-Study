@@ -77,6 +77,61 @@ _.go(
     L.map(car => `${car} 출발!`),
     _.each(console.log)
   )
+  console.clear()
 </script>
+
+4. 아임포트 결제 누락 처리 스케줄 만들기
+실무에서 이터러블 프로그래밍으로 이슈를 다뤄보기
+<script>
+/* 결제누락이슈는 네트워크 상의 연결 문제 및 서버통신간의 야기할수 있는 여러문제로 발생할 수 있음*/
+/* */
+const Impt = {
+  payments: {
+    1: [
+      { imp_id: 11, order_id: 1, amount: 15000 },
+      { imp_id: 12, order_id: 2, amount: 25000 },
+      { imp_id: 13, order_id: 3, amount: 10000 },
+
+    ],
+    2:[
+
+      { imp_id: 14, order_id: 4, amount: 25000 },
+      { imp_id: 15, order_id: 5, amount: 45000 },
+      { imp_id: 16, order_id: 6, amount: 15000 },
+    ],
+    3:[
+
+      { imp_id: 17, order_id: 7, amount: 20000 },
+      { imp_id: 18, order_id: 8, amount: 30000 },
+    ],
+    4:[],
+    5:[]
+  },
+  getPayments: page => {
+    console.log(`http://..?page=${page}`);
+    return _.delay(1000 * 2, Impt.payments[page])
+  },
+  cancelPayment: imp_id => Promise.resolve(`${imp_id}: 취소완료`)
+}
+/* 결제 내역 가져오기 */
+
+async function job(){
+  /*
+    결제된 결제모듈측 payments 를 가져오고,
+    page 단위로, 결제 데이터가 있는 부분까지만
+    모두 가져와 하나의 배열로 합침
+  */
+  const payments = await _.go(
+    L.range(1, Infinity),
+    L.map(Impt.getPayments),
+    /* 최대값보다만 적게 */
+    L.takeUntil(({length}) => length < 3),
+    _.flat,
+  )
+  console.log(payments)
+}
+job()
+</script>
+
 </body>
 </html>
