@@ -96,8 +96,15 @@ const Impt = {
   },
   cancelPayment: imp_id => Promise.resolve(`${imp_id}: 취소완료`)
 }
-/* 결제 내역 가져오기 */
 
+const DB = {
+  getOrders: ids => _.delay(100, [
+    { id: 1},
+    { id: 3},
+    { id: 7}
+  ])
+}
+/* 결제 내역 가져오기 */
 async function job(){
   /*
     결제된 결제모듈측 payments 를 가져오고,
@@ -109,9 +116,16 @@ async function job(){
     L.map(Impt.getPayments),
     /* 최대값보다만 적게 */
     L.takeUntil(({length}) => length < 3),
-    _.flat,
+    _.flat
   )
-  console.log(payments)
+  /* 결제가 성공된 Id를 뽑아라 */
+  const orderIds = await _.go(
+    payments,
+    _.map(p => p.order_id),
+    DB.getOrders,
+    _.map(({id}) => id)
+  )
+  console.log(orderIds);
 }
 job()
 </script>
