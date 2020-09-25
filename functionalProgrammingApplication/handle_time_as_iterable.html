@@ -142,6 +142,18 @@ async function job(){
     _.map(({id}) => id)
   )
   console.log(orderIds);
+  /* 비교결제후 취소 */
+  /*
+  결제모듈의 payments와 가맹점의 주무서를 비교 후
+  결제를 취소해야할 id들을 뽑아 결제취소 api를 실행
+  */
+  await _.go(
+    payments,
+    L.reject(p => orderIds.includes(p.order_id)),
+    L.map(p => p.imp_id),
+    L.map(Impt.cancelPayment),
+    _.each(console.log)
+  )
 }
 job()
 </script>

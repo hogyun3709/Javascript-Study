@@ -126,6 +126,14 @@ async function job(){
     _.map(({id}) => id)
   )
   console.log(orderIds);
+  
+  await _.go(
+    payments,
+    L.reject(p => orderIds.includes(p.order_id)),
+    L.map(p => p.imp_id),
+    L.map(Impt.cancelPayment),
+    _.each(console.log)
+  )
 }
 job()
 </script>
