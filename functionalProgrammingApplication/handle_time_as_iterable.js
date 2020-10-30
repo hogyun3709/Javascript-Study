@@ -126,7 +126,7 @@ async function job(){
     _.map(({id}) => id)
   )
   console.log(orderIds);
-  
+
   await _.go(
     payments,
     L.reject(p => orderIds.includes(p.order_id)),
@@ -136,4 +136,11 @@ async function job(){
   )
 }
 job()
+
+(function recur(){
+  Promise.all([
+    _.delay(7000, undefined),
+    job()
+  ]).then(recur)
+}) ();
 </script>

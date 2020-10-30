@@ -121,6 +121,7 @@ const DB = {
     { id: 7}
   ])
 }
+/* 각각의 함수들이 test를 마침, 함수들의 조합 */
 async function job(){
   /*
     결제된 결제모듈측 payments 를 가져오고,
@@ -156,6 +157,15 @@ async function job(){
   )
 }
 job()
+
+/* test case 최소화 */
+/* 반복 실행 */
+(function recur(){
+  Promise.all([
+    _.delay(7000, undefined),
+    job()
+  ]).then(recur)
+}) ();
 </script>
 
 </body>
