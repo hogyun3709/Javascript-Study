@@ -128,11 +128,16 @@
 
 const $ = {};
 
+// $.qs = (selector, parnet) => document.querySelector(selector, parent);
+$.qs = document.querySelector.bind(document);
+
 $.el = html => {
   const wrap = document.createElement('div');
   wrap.innerHTML = html;
   return wrap.children[0];
 };
+
+$.append = _.curry((parent, child) => parent.appendChild(child));
 
 </script>
 <script>
@@ -166,7 +171,10 @@ _.go(
   Images.fetch(),
   Images.tmpl,
   $.el,
-  el => document.querySelector('body').appendChild(el),
+  /* 함수에 인자를 전달하는 형식 */
+  // el => document.querySelector('body').appendChild(el),
+  // el => $.append($.qs('body'), el), //currying 적용전
+  $.append($.qs('body')),
   console.log
 )
 </script>
