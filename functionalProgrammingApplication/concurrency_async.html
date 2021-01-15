@@ -129,7 +129,14 @@
 const $ = {};
 
 // $.qs = (selector, parnet) => document.querySelector(selector, parent);
-$.qs = document.querySelector.bind(document);
+// $.qs = document.querySelector.bind(document);
+// $.qsa = document.querySelectorAll.bind(document);
+/* 인자가 가변으로 적용되어있는것은 커링 적용이 안됨 */
+$.qs = (selector, parent = document) => parent.querySelector(selector);
+$.qsa = (selector, parent = document) => parent.querySelectorAll(selector);
+
+$.find = _.curry($.qs);
+$.findAll = _.curry($.qsa);
 
 $.el = html => {
   const wrap = document.createElement('div');
@@ -161,6 +168,8 @@ Images.tmpl = imgs => `
       <div class="image">
         <div class="box"><img src="${img.url}" alt=""></div>
         <div class="name">${img.name}</div>
+        <div class="remove">x</div>
+
       </div>
     `, imgs)}
   </div>
@@ -175,7 +184,10 @@ _.go(
   // el => document.querySelector('body').appendChild(el),
   // el => $.append($.qs('body'), el), //currying 적용전
   $.append($.qs('body')),
-  console.log
+  // el => $.qsa('.image', el), // currying 적용전
+  $.findAll('.image'),
+  /* NodeList 는 array는 아니지만 iterable 이라 조회가 가능함 */
+  _.each( el => el.addEventListener('click', e => console.log(e)))
 )
 </script>
 
