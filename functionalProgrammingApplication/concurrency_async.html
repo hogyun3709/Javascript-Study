@@ -145,6 +145,9 @@ $.el = html => {
 };
 
 $.append = _.curry((parent, child) => parent.appendChild(child));
+// $.closest = (selector, el) => el.closest(selector); // currying
+$.closest = _.curry((selector, el) => el.closest(selector));
+$.remove = el => el.parentNode.removeChild(el);
 
 </script>
 <script>
@@ -187,8 +190,14 @@ _.go(
   // el => $.qsa('.image', el), // currying 적용전
   $.findAll('.image'),
   /* NodeList 는 array는 아니지만 iterable 이라 조회가 가능함 */
-  _.each( el => el.addEventListener('click', e => console.log(e)))
-)
+  _.each( el => el.addEventListener('click', e => _.go(
+    e.currentTarget,
+    // el => el.closest('.image'),  // method 중심
+    // el => $.closest('.image', el) // curry 적용전
+    $.closest('.image'),
+    $.remove,
+    console.log
+  ))))
 </script>
 
 </body>
