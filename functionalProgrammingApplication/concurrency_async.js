@@ -80,9 +80,52 @@ _.go(
   //   // el => $.closest('.image', el) // curry 적용전
   //   $.closest('.image'),
   //   $.remove,
-  $.on('click', e => _.go(
-    e.currentTarget,
-    $.closest('.image'),
-    $.remove
-  )));
+  $.on('click', e => {
+    if (confirm('R U sure to remove this content?')){
+      _.go(
+        e.currentTarget,
+        $.closest('.image'),
+        $.remove)
+      }
+    }
+  ));
+
+
+
+</script>
+/* 경고창 만들기 */
+<script>
+
+  Ui.confirm = msg => _.go(
+    `
+      <div class="confirm">
+        <div class="body">
+          <div class="msg">${msg}</div>
+            <div class="buttons">
+              <button type="button" class="cancel">취소</button>
+              <button type="button" class="ok">확인</button>
+            </div>
+        </div>
+      </div>
+    `,
+    $.el,
+    $.append($.qs('body')),
+    /* _.tap 함수를 이용해 elment 외부변화를 적용받지 않고 함수실행을 할수있게끔 양자선택을 도와줌 */
+    _.tap(
+      $.find('ok'),
+      $.on('click', e => _.go(
+        e.currentTarget,
+        $.closest('.confirm'),
+        $.remove
+      ))),
+    _.tap(
+      $.find('ok'),
+      $.on('click', e => _.go(
+        e.currentTarget,
+        $.closest('.confirm'),
+        $.remove
+      )))
+  );
+
+  Ui.confirm('정말 삭제 하시겠습니까?')
 </script>
