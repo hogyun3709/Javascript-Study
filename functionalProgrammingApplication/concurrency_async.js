@@ -129,3 +129,259 @@ _.go(
 
   Ui.confirm('정말 삭제 하시겠습니까?')
 </script>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>01/5</title>
+  <script src="./fx.js"></script>
+</head>
+<style>
+    .fade {
+      opacity: 0;
+    }
+    .fade-in {
+      opacity: 1;
+      transition: opacity 0.3s;
+    }
+    .confirm {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.2);
+      z-index: 2;
+    }
+    .confirm .body {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
+      width: 300px;
+      height: 160px;
+      background: #fff;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .confirm .msg {
+      padding: 0 24px;
+      margin-top: 56px;
+      margin-bottom: 16px;
+    }
+    .confirm button {
+      padding: 8px;
+      width: 60px;
+      border: 0;
+      background: #eee;
+      border-radius: 8px;
+      margin: 3px;
+    }
+    .confirm button.ok {
+      border: 0;
+      color: #fff;
+      background: #000;
+    }
+    .images {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+      padding: 16px;
+      overflow: auto;
+      text-align: center;
+    }
+    .image {
+      position: relative;
+      display: inline-block;
+      width: 160px;
+      margin: 4px;
+    }
+    .image .remove {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      width: 24px;
+      height: 24px;
+      padding: 3px 0 0;
+      box-sizing: border-box;
+      text-align: center;
+      background: #000;
+      color: #fff;
+      font-weight: bold;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    .image .box {
+      position: relative;
+      width: 160px;
+      height: 160px;
+      border: 1px solid #ccc;
+      margin-bottom: 8px;
+    }
+    .image img {
+      position: absolute;
+      top: 0px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      max-width: 90px;
+      max-height: 90px;
+      margin: auto;
+    }
+    .image .name {
+      text-align: center;
+      height: 20px;
+      overflow: hidden;
+    }
+  </style>
+<body>
+<div style="display: none;">
+
+1. 이미지 목록 그리기
+
+2. 경고창 만들기
+- confirm
+- Promise
+- alert
+- 중복제거
+
+3. 이미지 동시성 다루기
+
+4. 페이지 띄우기
+
+</div>
+<script>
+
+const $ = {};
+
+// $.qs = (selector, parnet) => document.querySelector(selector, parent);
+// $.qs = document.querySelector.bind(document);
+// $.qsa = document.querySelectorAll.bind(document);
+/* 인자가 가변으로 적용되어있는것은 커링 적용이 안됨 */
+$.qs = (selector, parent = document) => parent.querySelector(selector);
+$.qsa = (selector, parent = document) => parent.querySelectorAll(selector);
+
+$.find = _.curry($.qs);
+$.findAll = _.curry($.qsa);
+
+$.el = html => {
+  const wrap = document.createElement('div');
+  wrap.innerHTML = html;
+  return wrap.children[0];
+};
+
+$.append = _.curry((parent, child) => parent.appendChild(child));
+// $.closest = (selector, el) => el.closest(selector); // currying
+$.closest = _.curry((selector, el) => el.closest(selector));
+$.remove = el => el.parentNode.removeChild(el);
+
+//iterable 일때만 적용
+// $.on = (event, f) => elements => _.each( el => el.addEventListener('click', f), elements);
+
+$.on = (event, f) => elements => _.each( el => el.addEventListener(event, f),
+  _.isIterable(elements) ? elements : [elements]
+);
+
+
+
+</script>
+<script>
+const Images = {};
+
+Images.fetch = () => new Promise(resolve => setTimeout(() => resolve([
+  { name: "HEART", url: "https://s3.marpple.co/files/m2/t3/colored_images/45_1115570_1162087.png" },
+  { name: "하트", url: "https://s3.marpple.co/f1/2019/1/1235206_1548918825999_78819.png" },
+  { name: "2", url: "https://s3.marpple.co/f1/2018/1/1054966_1516076769146_28397.png" }, { name: "6", url: "https://s3.marpple.co/f1/2018/1/1054966_1516076919028_64501.png"},{"name":"도넛","url":"https://s3.marpple.co/f1/2019/1/1235206_1548918758054_55883.png"},{"name":"14","url":"https://s3.marpple.co/f1/2018/1/1054966_1516077199329_75954.png"},{"name":"15","url":"https://s3.marpple.co/f1/2018/1/1054966_1516077223857_39997.png"}]), 200));
+/* Array를 String 문자열로 만들면 , 쉼표가 찍혀서 출력됨 */
+/* 문자열 의 합을 만들기위해 a + b 대신 literal 을 사용함 */
+const string = iter => _.reduce((a, b) => `${a}${b}`, iter);
+
+/* flatMap 함수와 유사함 */
+_.strMap = _.curry(_.pipe(L.map, string));
+
+Images.tmpl = imgs => `
+  <div class="images">
+    ${_.strMap(img => `
+      <div class="image">
+        <div class="box"><img src="${img.url}" alt=""></div>
+        <div class="name">${img.name}</div>
+        <div class="remove">x</div>
+      </div>
+    `, imgs)}
+  </div>
+`;
+
+
+_.go(
+  Images.fetch(),
+  Images.tmpl,
+  $.el,
+  /* 함수에 인자를 전달하는 형식 */
+  // el => document.querySelector('body').appendChild(el),
+  // el => $.append($.qs('body'), el), //currying 적용전
+  $.append($.qs('body')),
+  // el => $.qsa('.image', el), // currying 적용전
+  $.findAll('.remove'),
+  /* NodeList 는 array는 아니지만 iterable 이라 조회가 가능함 */
+  /* $.on 으로 간결하게 표현 */
+  // _.each( el => el.addEventListener('click', e => _.go(
+  //   e.currentTarget,
+  //   // el => el.closest('.image'),  // method 중심
+  //   // el => $.closest('.image', el) // curry 적용전
+  //   $.closest('.image'),
+  //   $.remove,
+  $.on('click', e => {
+    if (confirm('R U sure to remove this content?')){
+      _.go(
+        e.currentTarget,
+        $.closest('.image'),
+        $.remove)
+      }
+    }
+  ));
+/* 경고창 만들기 */
+
+const Ui = {};
+Ui.confirm = msg => _.go(
+  `
+    <div class="confirm">
+      <div class="body">
+        <div class="msg">${msg}</div>
+          <div class="buttons">
+            <button type="button" class="cancel">취소</button>
+            <button type="button" class="ok">확인</button>
+          </div>
+      </div>
+    </div>
+  `,
+  $.el,
+  $.append($.qs('body')),
+  /* _.tap 함수를 이용해 elment 외부변화를 적용받지 않고 함수실행을 할수있게끔 양자선택을 도와줌 */
+  // _.tap(
+  //   $.find('ok'),
+  //   $.on('click', e => _.go(
+  //     e.currentTarget,
+  //     $.closest('.confirm'),
+  //     $.remove
+  //   ))),
+    $.find('ok'),
+    $.on('click', e => _.go(
+      e.currentTarget,
+      $.closest('.confirm'),
+      $.remove
+    )),
+    console.log
+);
+
+
+
+</script>
+
+</body>
+</html>
